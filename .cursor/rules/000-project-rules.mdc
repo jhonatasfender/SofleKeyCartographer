@@ -1,46 +1,68 @@
 ---
-description: Regras principais do projeto (MD3, RN, TS, NativeWind v4, D3)
+description: Regras principais do projeto (MD3, React + Vite, TS, Tailwind v4, D3)
 globs: 
   - src/**/*
   - README.md
   - package.json
-tags: [project, md3, react-native, typescript, tailwind, d3]
+tags: [project, md3, react, vite, typescript, tailwind, d3]
 priority: 1
 version: 1.0.0
 ---
 
-## SofleKeyCartographer — Project Rules (MD3 + RN + TS + Tailwind + D3)
+## SofleKeyCartographer — Project Rules (MD3 + React + Vite + TS + Tailwind v4 + D3)
 
 ### Contexto
-- Aplicativo RN para mapear/visualizar keymaps do teclado Sofle.
-- UI em MD3 (react-native-paper), estilização com Tailwind via NativeWind v4.
-- SVG gerado/renderizado com react-native-svg + D3 (módulos RN-friendly).
+- Aplicação Web (React + Vite) para mapear/visualizar keymaps do teclado Sofle.
+- UI em MD3 usando Material UI (MUI v6) ou Material Web (tokens MD3), com Tailwind v4.
+- SVG renderizado nativamente no browser (SVG + D3) com interações (zoom/drag).
 
 ### Requisitos
 - Componentes funcionais, Hooks, tipagem estrita.
-- Sem downgrades de Tailwind/NativeWind/React Native.
+- Sem downgrades de Tailwind ou bibliotecas-core (Vite/React/MUI).
 - Separação UI/domínio; persistência via repositórios.
-- Tema claro/escuro sincronizado Paper + NativeWind.
+- Tema claro/escuro com classe `dark` no `html` e tokens MD3 equivalentes.
 
 ### Estrutura
 ```
 src/
-  app/
-  features/keyboard/{components,models,repositories,hooks,utils,screens}
-  ui/ navigation/ styles/ utils/ types/ assets/{svg,images,fonts}
+  app/                 # bootstrap (providers de tema/roteamento)
+  features/keyboard/   # domínio do teclado
+    components/
+    models/
+    repositories/
+    hooks/
+    utils/
+    pages/             # páginas/rotas específicas do domínio
+  ui/                  # componentes compartilhados (MD3 wrappers, inputs, etc.)
+  routes/              # (opcional) arquivos de rota se usar file-based routing
+  styles/              # global.css (Tailwind v4) e utilitários
+  utils/
+  types/
+  assets/{svg,images,fonts}
 ```
 
-### MD3
-- Usar `MD3LightTheme`/`MD3DarkTheme`, Paper v5+, navegação integrada ao tema.
-- Componentes Paper preferidos (Appbar, FAB, Dialog, Snackbar).
+### MD3 (Web)
+- Usar Material UI v6 (ou Material Web) com tokens inspirados no MD3.
+- Componentes padrão: AppBar, Fab, Button, Dialog, Snackbar.
+- Integrar tema ao roteador (React Router/TanStack Router) quando necessário.
 
-### Tailwind + NativeWind v4
-- `presets: [require('nativewind/preset')]`, `darkMode: 'class'`.
-- Definir tokens (primary, surface, onSurface) alinhados a MD3.
+### Tailwind v4 (CSS-first)
+- Não usar `tailwind.config.js` por padrão (Tailwind v4).
+- Importar no `src/styles/global.css`:
+```
+@import "tailwindcss";
+@theme {
+  --color-primary: #6750A4; /* MD3 sample */
+  --color-on-primary: #FFFFFF;
+  --surface: #FFFBFE;
+  --on-surface: #1C1B1F;
+}
+```
+- Controle de dark mode por classe `dark` no `html` (ou `data-theme`).
 
-### D3 + SVG
-- `react-native-svg` para render. D3 para cálculos (`d3-shape`, `d3-scale`, `d3-array`).
-- Evitar `d3-selection`/`d3-zoom`; gestos via RN Gesture Handler.
+### D3 + SVG (Web)
+- Usar SVG nativo com D3 (`d3-selection`, `d3-zoom`, `d3-drag`, `d3-shape`, `d3-scale`).
+- Interações por PointerEvents; manter render declarativa em React quando possível.
 
 ### Tipos de Domínio
 ```ts
@@ -52,13 +74,13 @@ export interface KeyboardLayout { keyboard: 'sofle'; keys: Key[]; layers: Layer[
 
 ### Repositórios
 - `KeyboardLayoutRepository`: `getCurrent()`, `save(layout)`, `listHistory()`.
-- Persistir JSON local (AsyncStorage/FS); sincronização futura via Supabase (opcional).
+- Persistir JSON em `localStorage`/`indexedDB` (via Dexie, p.ex.). Sincronização futura via Supabase (opcional).
 
 ### Acessibilidade
 - `accessibilityLabel`, roles, contraste MD3/ WCAG.
 
 ### Qualidade
-- ESLint + Prettier, Jest + @testing-library/react-native.
+- ESLint + Prettier, Jest + @testing-library/react.
 - Conventional Commits e imports absolutos `src/*`.
 
 ### SVG Sofle (asset)
