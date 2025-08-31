@@ -192,3 +192,7 @@ Outras referências úteis: layouts do projeto `keymap-drawer` (GitHub) e docs d
 - Preferir RN CLI/Expo atual. Não realizar downgrades de libs.
 - Garantir build sem warnings de TypeScript/ESLint.
 - PRs com testes quando alterarem lógica de domínio.
+
+
+supabase
+pass: wJWFUZ8LZvabvDAL
