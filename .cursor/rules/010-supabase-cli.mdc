@@ -1,0 +1,42 @@
+---
+description: Fluxo padronizado de comandos Supabase CLI (migrations)
+globs:
+  - supabase/migrations/**/*
+  - package.json
+tags: [supabase, cli, migrations]
+priority: 2
+version: 1.0.0
+---
+
+## Supabase CLI — Fluxo de Migrations
+
+### Objetivo
+Padronizar os comandos para criar, aplicar e inspecionar migrations, evitando conflitos de histórico.
+
+### Pré-requisitos
+- Projeto já linkado/logado no Supabase CLI (`supabase login` e `supabase link`).
+- Variáveis do app no `.env.local` (não usadas pelo CLI, mas necessárias para o app):
+  - `VITE_SUPABASE_URL`
+  - `VITE_SUPABASE_ANON_KEY`
+
+### Comandos (npm scripts)
+- Criar nova migration (vazia): `npm run db:new -- <nome>`
+- Aplicar migrations ao remoto: `npm run db:push`
+- Listar histórico local × remoto: `npm run db:list`
+- Sincronizar schema remoto → local (gera remote_schema): `npm run db:pull`
+- Reparar histórico (marcar como applied/reverted):
+  - `npm run db:repair -- --status applied <timestamp>`
+  - `npm run db:repair -- --status reverted <timestamp>`
+
+### Fluxo recomendado
+1. `npm run db:pull` se houver divergência ou projeto novo.
+2. `npm run db:new -- add_<descricao>` cria arquivo em `supabase/migrations`.
+3. Editar o SQL no arquivo criado.
+4. `npm run db:push` para aplicar no projeto remoto.
+5. `npm run db:list` para validar histórico.
+
+### Observações
+- Sempre usar arquivos com timestamp gerados pelo CLI.
+- Evitar criar migrations manualmente sem `supabase migration new`.
+- Em caso de mismatch, seguir a sugestão do CLI e usar `db:repair` conforme indicado.
+

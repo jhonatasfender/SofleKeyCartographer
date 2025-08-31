@@ -1,0 +1,30 @@
+# Env files
+.env*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.log
+
+# Vite cache
+.vite/
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Supabase CLI cache (keep migrations tracked)
+supabase/.temp
+supabase/.branches
+
+# OS files
+.DS_Store
