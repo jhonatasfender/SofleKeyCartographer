@@ -8,11 +8,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "db:new": "supabase migration new",
-    "db:push": "supabase db push",
-    "db:list": "supabase migration list",
-    "db:pull": "supabase db pull",
-    "db:repair": "supabase migration repair"
+    "db:new": "npx supabase migration new",
+    "db:push": "npx supabase db push",
+    "db:list": "npx supabase migration list",
+    "db:pull": "npx supabase db pull",
+    "db:repair": "npx supabase migration repair"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.45.0",
     "@supabase/supabase-js": "^2.56.1",
+    "d3": "7.9.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
